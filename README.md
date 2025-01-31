@@ -63,7 +63,7 @@ src/
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/yourusername/user-management-app.git
+   git clone https://github.com/Sonugupta2001/user-management-dashboard.git
    ```
 
 2. **Navigate to the project directory**
@@ -82,25 +82,21 @@ src/
 
 ## Available Scripts
 
-In the project directory, you can run:
-
-- **Start the app in development mode**
+- **Starting the app in development mode**
 
   ```bash
   npm start
   ```
 
-  Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+  The webpage will be accessible at [http://localhost:3000](http://localhost:3000)
 
-- **Run unit tests**
+- **Running unit tests**
 
   ```bash
   npm test
   ```
 
-  Launches the test runner in interactive watch mode.
-
-- **Build the app for production**
+- **Building the app for production**
 
   ```bash
   npm run build
@@ -168,8 +164,6 @@ The `UserManagement` component is the main container that orchestrates the user 
   - Renders `UsersTable` with user data.
   - Displays success messages using `Snackbar`.
   - Includes delete confirmation dialog (`Dialog` component).
-
-**Code Snippet:** (Refer to the full code provided above)
 
 ---
 
@@ -240,15 +234,7 @@ The `UsersTable` component displays users in a paginated table with options to e
 
   - Displays a message when no users are available.
 
-**Code Snippet:** (Refer to the full code provided above)
-
 ---
-
-## Utilities
-
-**File:** `src/utils/utils.js`
-
-Utility functions used across the application.
 
 ### Functions:
 
@@ -345,28 +331,6 @@ Unit tests are written using Jest and React Testing Library to ensure the compon
     - Mocks a network error.
     - Asserts that the function throws an error.
 
-**Example Test Code:**
-
-```javascript
-describe('fetchUsersAPI', () => {
-  it('should fetch users successfully', async () => {
-    const mockResponse = { data: [mockUser] };
-    axios.get.mockResolvedValueOnce(mockResponse);
-
-    const result = await fetchUsersAPI();
-    expect(result).toEqual(mockResponse);
-    expect(axios.get).toHaveBeenCalledWith('https://jsonplaceholder.typicode.com/users');
-  });
-
-  it('should handle fetch error', async () => {
-    const error = new Error('Network error');
-    axios.get.mockRejectedValueOnce(error);
-
-    await expect(fetchUsersAPI()).rejects.toThrow('Network error');
-  });
-});
-```
-
 ---
 
 ### UserForm Tests
@@ -391,39 +355,6 @@ describe('fetchUsersAPI', () => {
   - Fills out the form with valid data.
   - Submits the form.
   - Asserts that `onSubmit` is called with the correct data.
-
-**Example Test Code:**
-
-```javascript
-it('submits form with valid data', async () => {
-  render(
-    <UserForm
-      initialValues={mockInitialValues}
-      onSubmit={mockOnSubmit}
-      editingUser={null}
-      cancelEdit={mockCancelEdit}
-    />
-  );
-
-  await userEvent.type(screen.getByLabelText(/first name/i), 'John');
-  await userEvent.type(screen.getByLabelText(/email/i), 'john@example.com');
-
-  const departmentSelect = screen.getByLabelText(/department/i);
-  fireEvent.mouseDown(departmentSelect);
-  fireEvent.click(screen.getByText('Romaguera-Crona'));
-
-  fireEvent.click(screen.getByText('Add User'));
-
-  await waitFor(() => {
-    expect(mockOnSubmit).toHaveBeenCalledWith({
-      firstName: 'John',
-      lastName: '',
-      email: 'john@example.com',
-      department: 'Romaguera-Crona'
-    });
-  });
-});
-```
 
 ---
 
@@ -467,53 +398,6 @@ it('submits form with valid data', async () => {
   - Checks that the success message is displayed.
   - Verifies `deleteUserAPI` is called with the correct user ID.
 
-**Example Test Code:**
-
-```javascript
-it('handles delete user', async () => {
-  // Mock API calls
-  fetchUsersAPI.mockResolvedValue({
-    data: [
-      {
-        id: 1,
-        name: 'Leanne Graham',
-        email: 'Sincere@april.biz',
-        company: { name: 'Romaguera-Crona' },
-      },
-    ],
-  });
-  deleteUserAPI.mockResolvedValue({});
-
-  render(<UserManagement />);
-
-  // Wait for the data to be loaded
-  await waitFor(() => {
-    expect(screen.queryByText(/loading users/i)).not.toBeInTheDocument();
-  });
-
-  // Click the delete button for the user
-  fireEvent.click(screen.getByLabelText('delete'));
-
-  // Verify that the delete confirmation dialog appears
-  expect(screen.getByText(/delete confirmation/i)).toBeInTheDocument();
-
-  // Click the "Delete" button in the dialog
-  fireEvent.click(screen.getByRole('button', { name: /delete/i }));
-
-  // Wait for the success message
-  await waitFor(() => {
-    expect(screen.getByText(/user deleted successfully/i)).toBeInTheDocument();
-  });
-
-  // Verify that the user has been removed from the table
-  expect(screen.queryByText('Leanne')).not.toBeInTheDocument();
-  expect(screen.queryByText('Graham')).not.toBeInTheDocument();
-
-  // Ensure the API was called with the correct user ID
-  expect(deleteUserAPI).toHaveBeenCalledWith(1);
-});
-```
-
 ---
 
 ### UsersTable Tests
@@ -543,17 +427,6 @@ it('handles delete user', async () => {
   - Renders the component with an empty `users` array.
   - Asserts that the "No users found." message is displayed.
 
-**Example Test Code:**
-
-```javascript
-it('handles edit button click', () => {
-  render(<UsersTable {...mockProps} />);
-
-  fireEvent.click(screen.getByLabelText('edit'));
-  expect(mockProps.editUser).toHaveBeenCalledWith(mockUsers[0]);
-});
-```
-
 ---
 
 ## Running Tests
@@ -566,25 +439,7 @@ npm test
 
 This command starts the Jest test runner and runs all tests located in the `__tests__` directory.
 
-**Notes:**
-
-- The tests use `@testing-library/react` for rendering components and simulating user interactions.
-- API calls are mocked using `jest.mock()` to simulate responses and control test scenarios.
-- Each test suite includes `beforeEach` to reset mocks and ensure test isolation.
-
 ---
-
-**Key Features:**
-
-- **React Hooks:** Utilized for state and effect management.
-- **Form Handling with Formik and Yup:** Simplifies form state management and validation.
-- **Material-UI Components:** Provides a rich set of UI components and styling.
-- **API Integration with Axios:** Manages HTTP requests to external APIs.
-- **State Management:** Local state is used to simulate API persistence.
-- **Unit Testing with Jest and React Testing Library:**
-  - Provides confidence in component functionality.
-  - Tests cover various scenarios, including success and error cases.
-  - Mocks external dependencies for isolated testing.
 
 
 **Future improvements:**
